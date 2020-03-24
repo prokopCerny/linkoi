@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <ul>
+      <li v-for="item in currentEvents(myTestData)" :key="item.name">{{item.name}}</li>
+    </ul>
     <b-card
       v-for="subject in subjects"
       :key="subject.code"
@@ -21,6 +24,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import myTestData from '@/assets/events.json'
 export default Vue.extend({
   methods: {
     linkType: function(name: string): string {
@@ -41,10 +45,19 @@ export default Vue.extend({
         default:
           return "secondary";
       }
+    },
+    currentEvents: function(events: Array<any>) {
+      const d = new Date();
+      return events.filter(function (event) {
+        const d2 = new Date(event.datetime);
+        return d2 >= d;
+      })
+
     }
   },
   data() {
     return {
+      myTestData: myTestData,
       subjects: [
         {
           name: "Useful Links",
